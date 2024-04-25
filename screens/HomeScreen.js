@@ -40,7 +40,7 @@ const HomeScreen = () => {
       setUserId(userId);
 
       axios
-        .get(`http://localhost:8000/users/${userId}`)
+        .get(`http://192.168.1.111:8082/users/${userId}`)
         .then((response) => {
           setUsers(response.data);
         })

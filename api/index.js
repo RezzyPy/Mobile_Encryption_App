@@ -5,7 +5,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
 const app = express();
-const port = 8000;
+const port = 8082;
 const cors = require("cors");
 app.use(cors());
 
@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 const jwt = require("jsonwebtoken");
-
+/*
 mongoose
-  .connect("mongodb+srv://sujananand:sujan@cluster0.qvtqiux.mongodb.net/", {
+  .connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mongodb.net/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -25,9 +25,22 @@ mongoose
   .catch((err) => {
     console.log("Error connecting to MongoDb", err);
   });
+*/
+
+mongoose.connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mongodb.net/test?retryWrites=true&w=majority&ssl=true", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  sslValidate: true,
+  //connectTimeoutMS: 1000, // 10 seconds
+  //socketTimeoutMS: 2000 // 20 seconds
+}).then(() => {
+  console.log("Connected to MongoDB");
+}).catch(err => {
+  console.error("Error connecting to MongoDB", err);
+});
 
 app.listen(port, () => {
-  console.log("Server running on port 8000");
+  console.log('Server running on port ${port}');
 });
 
 const User = require("./models/user");
@@ -37,18 +50,16 @@ const Message = require("./models/message");
 
 app.post("/register", (req, res) => {
   const { name, email, password, image } = req.body;
+  console.log("Attempting to register user:", email);  // Log when starting the registration process
 
-  // create a new User object
   const newUser = new User({ name, email, password, image });
-
-  // save the user to the database
-  newUser
-    .save()
+  newUser.save()
     .then(() => {
+      console.log("User registered:", email);  // Log successful registration
       res.status(200).json({ message: "User registered successfully" });
     })
     .catch((err) => {
-      console.log("Error registering user", err);
+      console.log("Error registering user", email, err);
       res.status(500).json({ message: "Error registering the user!" });
     });
 });

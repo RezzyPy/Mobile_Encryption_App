@@ -15,7 +15,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  useEffect(() => {
+  /*useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const token = await AsyncStorage.getItem("authToken");
@@ -31,7 +31,7 @@ const LoginScreen = () => {
     };
 
     checkLoginStatus();
-  }, []);
+  }, []);*/
   const handleLogin = () => {
     const user = {
       email: email,
@@ -39,7 +39,7 @@ const LoginScreen = () => {
     };
 
     axios
-      .post("http://localhost:8000/login", user)
+      .post("http://192.168.1.111:8082/login", user)
       .then((response) => {
         console.log(response);
         const token = response.data.token;
@@ -95,7 +95,7 @@ const LoginScreen = () => {
                 width: 300,
               }}
               placeholderTextColor={"black"}
-              placeholder="enter Your Email"
+              placeholder="Enter Your Email"
             />
           </View>
 
@@ -116,7 +116,7 @@ const LoginScreen = () => {
                 width: 300,
               }}
               placeholderTextColor={"black"}
-              placeholder="Passowrd"
+              placeholder="Password"
             />
           </View>
 

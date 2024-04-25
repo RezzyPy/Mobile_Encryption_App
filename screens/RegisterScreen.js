@@ -26,26 +26,39 @@ const RegisterScreen = () => {
     };
 
     // send a POST  request to the backend API to register the user
-    axios
-      .post("http://localhost:8000/register", user)
-      .then((response) => {
-        console.log(response);
-        Alert.alert(
-          "Registration successful",
-          "You have been registered Successfully"
-        );
-        setName("");
-        setEmail("");
-        setPassword("");
-        setImage("");
-      })
-      .catch((error) => {
-        Alert.alert(
-          "Registration Error",
-          "An error occurred while registering"
-        );
-        console.log("registration failed", error);
-      });
+    axios.post("http://192.168.1.111:8082/register", user, { timeout: 3000 })
+  .then(response => {
+    console.log("Response received:", response);
+    Alert.alert(
+      "Registration successful",
+      "You have been registered Successfully"
+    );
+    setName("");
+    setEmail("");
+    setPassword("");
+    setImage("");
+  })
+  .catch(error => {
+    console.log("Registration failed", error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("Error response data:", error.response.data);
+      console.log("Error response status:", error.response.status);
+      console.log("Error response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log("Error request:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error message:", error.message);
+    }
+    console.log("Error config:", error.config);
+    Alert.alert(
+      "Registration Error",
+      "An error occurred while registering: " + (error.response ? error.response.data : error.message)
+    );
+  });
   };
   return (
     <View
