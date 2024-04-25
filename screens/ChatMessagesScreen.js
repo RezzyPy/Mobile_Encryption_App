@@ -236,7 +236,11 @@ const ChatMessagesScreen = () => {
     }
   };
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#F0F0F0" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // this makes the text not be hidden by on-screen keyboard
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 100}
+    >
       <ScrollView ref={scrollViewRef} contentContainerStyle={{flexGrow:1}} onContentSizeChange={handleContentSizeChange}>
         {messages.map((item, index) => {
           if (item.messageType === "text") {
@@ -249,7 +253,7 @@ const ChatMessagesScreen = () => {
                   item?.senderId?._id === userId
                     ? {
                         alignSelf: "flex-end",
-                        backgroundColor: "#DCF8C6",
+                        backgroundColor: "#9fd5f3",
                         padding: 8,
                         maxWidth: "60%",
                         borderRadius: 7,
@@ -279,7 +283,7 @@ const ChatMessagesScreen = () => {
                   style={{
                     textAlign: "right",
                     fontSize: 9,
-                    color: "gray",
+                    color: "gray", // timestamp color
                     marginTop: 5,
                   }}
                 >
@@ -343,7 +347,7 @@ const ChatMessagesScreen = () => {
         })}
       </ScrollView>
 
-      <View
+      <View // div above text box
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -369,7 +373,7 @@ const ChatMessagesScreen = () => {
             flex: 1,
             height: 40,
             borderWidth: 1,
-            borderColor: "#dddddd",
+            borderColor: "#dddddd", // color around the outline of the text box
             borderRadius: 20,
             paddingHorizontal: 10,
           }}
@@ -392,7 +396,7 @@ const ChatMessagesScreen = () => {
         <Pressable
           onPress={() => handleSend("text")}
           style={{
-            backgroundColor: "#007bff",
+            backgroundColor: "#007bff", // send button color
             paddingVertical: 8,
             paddingHorizontal: 12,
             borderRadius: 20,
