@@ -16,13 +16,13 @@ const HomeScreen = () => {
     navigation.setOptions({
       headerTitle: "",
       headerLeft: () => (
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Swift Chat</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Users</Text>
       ),
       headerRight: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Ionicons onPress={() => navigation.navigate("Chats")} name="chatbox-ellipses-outline" size={24} color="black" />
           <MaterialIcons
-            onPress={() => navigation.navigate("Friends")}
+            onPress={() => navigation.navigate("Friend Requests")}
             name="people-outline"
             size={24}
             color="black"

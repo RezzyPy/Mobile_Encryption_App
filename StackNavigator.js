@@ -26,7 +26,7 @@ const StackNavigator = () => {
         />
         <Stack.Screen name="Home" component={HomeScreen} />
 
-        <Stack.Screen name="Friends" component={FriendsScreen} />
+        <Stack.Screen name="Friend Requests" component={FriendsScreen} />
 
         <Stack.Screen name="Chats" component={ChatsScreen} />
 
