@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import User from "../components/User";
+import config from "../config"
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ const HomeScreen = () => {
       setUserId(userId);
 
       axios
-        .get(`http://192.168.1.111:8082/users/${userId}`)
+        .get(`http://${config.serverIP}/users/${userId}`)
         .then((response) => {
           setUsers(response.data);
         })

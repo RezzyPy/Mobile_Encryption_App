@@ -15,21 +15,11 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 // used for issuing JWTs for authentication.
 const jwt = require("jsonwebtoken");
-/*
-mongoose
-  .connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mongodb.net/", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to Mongo Db");
-  })
-  .catch((err) => {
-    console.log("Error connecting to MongoDb", err);
-  });
-*/
+// Instead of using ES6 import, use CommonJS require
+const config = require("../config");
 
-mongoose.connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mongodb.net/test?retryWrites=true&w=majority&ssl=true", {
+
+mongoose.connect(`${config.mongoConnectionString}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   sslValidate: true,
@@ -42,7 +32,7 @@ mongoose.connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mon
 });
 
 app.listen(port, () => {
-  console.log('Server running on port 8082');
+  console.log(`Server running on port ${port}`);
 });
 
 //to store the schemas used

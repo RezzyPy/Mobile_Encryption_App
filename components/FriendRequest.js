@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import React, { useContext } from "react";
 import { UserType } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
+import config from "../config"
 
 const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
   const { userId, setUserId } = useContext(UserType);
@@ -9,7 +10,7 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
   const acceptRequest = async (friendRequestId) => {
     try {
       const response = await fetch(
-        "http://192.168.1.111:8082/friend-request/accept",
+        `http://${config.serverIP}/friend-request/accept`,
         {
           method: "POST",
           headers: {

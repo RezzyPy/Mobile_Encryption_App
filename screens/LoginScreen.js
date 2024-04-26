@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 // local storage system to persist data across app restarts.
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../config"
 
 const LoginScreen = () => {
   //useState hooks initialize state variables email and password with default values
@@ -41,7 +42,7 @@ const LoginScreen = () => {
     };
     //Sends a POST request to the backend server with the user's email and password.
     //on login, server responds with a token which is store locally in AsyncStorage under authToken
-    axios.post("http://192.168.1.111:8082/login", user)
+    axios.post(`http://${config.serverIP}/login`, user)
       .then((response) => {
         const token = response.data.token;
         AsyncStorage.setItem("authToken", token);

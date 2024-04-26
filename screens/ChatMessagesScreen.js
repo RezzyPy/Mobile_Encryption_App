@@ -18,6 +18,7 @@ import EmojiSelector from "react-native-emoji-selector";
 import { UserType } from "../UserContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import config from "../config"
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -56,7 +57,7 @@ const ChatMessagesScreen = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://192.168.1.111:8082/messages/${userId}/${recepientId}`
+        `http://${config.serverIP}/messages/${userId}/${recepientId}`
       );
       const data = await response.json();
 
@@ -83,7 +84,7 @@ const ChatMessagesScreen = () => {
     const fetchRecepientData = async () => {
       try {
         const response = await fetch(
-          `http://192.168.1.111:8082/user/${recepientId}`
+          `http://${config.serverIP}/user/${recepientId}`
         );
 
         const data = await response.json();
@@ -114,7 +115,7 @@ const ChatMessagesScreen = () => {
         formData.append("messageText", message);
       }
 
-      const response = await fetch("http://192.168.1.111:8082/messages", {
+      const response = await fetch("http://${config.serverIP}/messages", {
         method: "POST",
         body: formData,
       });
@@ -187,7 +188,7 @@ const ChatMessagesScreen = () => {
 
   const deleteMessages = async (messageIds) => {
     try {
-      const response = await fetch("http://192.168.1.111:8082/deleteMessages", {
+      const response = await fetch(`http://${config.serverIP}/deleteMessages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

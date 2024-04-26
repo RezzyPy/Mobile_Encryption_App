@@ -3,6 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { UserType } from "../UserContext";
 import FriendRequest from "../components/FriendRequest";
+import config from "../config"
 
 const FriendsScreen = () => {
   const { userId, setUserId } = useContext(UserType);
@@ -14,7 +15,7 @@ const FriendsScreen = () => {
   const fetchFriendRequests = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.1.111:8082/friend-request/${userId}`
+        `http://${config.serverIP}/friend-request/${userId}`
       );
       if (response.status === 200) {
         const friendRequestsData = response.data.map((friendRequest) => ({

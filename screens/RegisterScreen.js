@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Pressable, Ale
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import config from "../config"
 
 //useState hooks. initiallzed as empty, updater functions change these values
 const RegisterScreen = () => {
@@ -20,7 +21,7 @@ const RegisterScreen = () => {
       image: image,
     };
     // sends to backend to create user
-    axios.post("http://192.168.1.111:8082/register", user)
+    axios.post(`http://${config.serverIP}/register`, user)
       .then((response) => {
         Alert.alert("Registration successful", "You have been registered Successfully");
         setName("");
