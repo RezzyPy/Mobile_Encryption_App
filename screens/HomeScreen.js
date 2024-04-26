@@ -1,36 +1,37 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons"; // For the logout icon
 import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import User from "../components/User";
+
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
   const [users, setUsers] = useState([]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "",
+      headerTitle: () => (
+        <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}>Users</Text>
+      ),
       headerLeft: () => (
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Users</Text>
+        <TouchableOpacity onPress={logout}>
+          <AntDesign name="logout" size={24} color="black" style={{ marginLeft: 10 }} />
+        </TouchableOpacity>
       ),
       headerRight: () => (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Ionicons onPress={() => navigation.navigate("Chats")} name="chatbox-ellipses-outline" size={24} color="black" />
-          <MaterialIcons
-            onPress={() => navigation.navigate("Friend Requests")}
-            name="people-outline"
-            size={24}
-            color="black"
-          />
+        <View style={{ flexDirection: "row", alignItems: "center", marginRight: 10 }}>
+          {/* Empty for no icons in the header right */}
         </View>
       ),
     });
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -52,10 +53,26 @@ const HomeScreen = () => {
     fetchUsers();
   }, []);
 
-  console.log("users", users);
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem("authToken");
+      navigation.replace("Login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   return (
-    <View>
-      <View style={{ padding: 10 }}>
+    <View style={styles.container}>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("Chats")}>
+          <Ionicons name="chatbox-ellipses-outline" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("Friend Requests")}>
+          <MaterialIcons name="people-outline" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.userList}>
         {users.map((item, index) => (
           <User key={index} item={item} />
         ))}
@@ -64,6 +81,29 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10,
+    marginTop: 10
+  },
+  iconButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#e0e0e0' // Light grey background for the icon buttons
+  },
+  userList: {
+    flex: 1,
+    marginTop: 10,
+    paddingHorizontal: 10
+  }
+});
 
-const styles = StyleSheet.create({});
+export default HomeScreen;

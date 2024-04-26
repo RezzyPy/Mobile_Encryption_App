@@ -9,10 +9,11 @@ const app = express();
 const port = 8082;
 const cors = require("cors");
 app.use(cors());
-
+// Configures body-parser to handle URL-encoded data and JSON. This is for receiving data through API requests.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+// used for issuing JWTs for authentication.
 const jwt = require("jsonwebtoken");
 /*
 mongoose
@@ -41,13 +42,15 @@ mongoose.connect("mongodb+srv://diegoperez08:secretpassword@cluster1.qzcwvdu.mon
 });
 
 app.listen(port, () => {
-  console.log('Server running on port ${port}');
+  console.log('Server running on port 8082');
 });
 
+//to store the schemas used
 const User = require("./models/user");
 const Message = require("./models/message");
 
 //endpoint for registration of the user
+
 
 app.post("/register", (req, res) => {
   const { name, email, password, image } = req.body;

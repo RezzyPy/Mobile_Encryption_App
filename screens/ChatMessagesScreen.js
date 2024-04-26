@@ -70,14 +70,14 @@ const ChatMessagesScreen = () => {
     }
   };
 
-  /*useEffect(() => {
-    fetchMessages();
-  }, []);*/
   useEffect(() => {
+    fetchMessages();
+  }, []);
+  /*useEffect(() => {
     const intervalId = setInterval(fetchMessages, 1000); // Fetch messages every x seconds
   
     return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, [fetchMessages]);
+  }, [fetchMessages]);*/
 
   useEffect(() => {
     const fetchRecepientData = async () => {

@@ -13,7 +13,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   //used to check if the user is already looged in when the component mounts
-  /*useEffect(() => {
+  useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         // retrieves authToken from local storage if it exists
@@ -30,7 +30,7 @@ const LoginScreen = () => {
     };
 
     checkLoginStatus();
-  }, []);  *///empty dependency [] makes it so  it only runs once
+  }, []);  //empty dependency [] makes it so  it only runs once
   
 
   //constructs user object with the email and password captured from state
