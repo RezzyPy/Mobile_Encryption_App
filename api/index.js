@@ -1,3 +1,4 @@
+//a web framework for Node.js that simplifies routing and middleware functionality.
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");

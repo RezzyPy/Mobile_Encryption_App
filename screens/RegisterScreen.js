@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
+//useState hooks. initiallzed as empty, updater functions change these values
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -10,6 +11,7 @@ const RegisterScreen = () => {
   const [image, setImage] = useState("");
   const navigation = useNavigation();
 
+  //creates an object with all information
   const handleRegister = () => {
     const user = {
       name: name,
@@ -17,7 +19,7 @@ const RegisterScreen = () => {
       password: password,
       image: image,
     };
-
+    // sends to backend to create user
     axios.post("http://192.168.1.111:8082/register", user)
       .then((response) => {
         Alert.alert("Registration successful", "You have been registered Successfully");
