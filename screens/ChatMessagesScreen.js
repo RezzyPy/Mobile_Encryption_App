@@ -243,8 +243,8 @@ const ChatMessagesScreen = () => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "#F0F0F0" }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"} // this makes the text not be hidden by on-screen keyboard
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 100}
+      //behavior={Platform.OS === "ios" ? "padding" : "height"} // this makes the text not be hidden by on-screen keyboard
+      //keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 100}
     >
       <ScrollView ref={scrollViewRef} contentContainerStyle={{flexGrow:1}} onContentSizeChange={handleContentSizeChange}>
         {messages.map((item, index) => {

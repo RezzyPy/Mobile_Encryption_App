@@ -10,6 +10,7 @@ import ChatsScreen from "./screens/ChatsScreen";
 import ChatMessagesScreen from "./screens/ChatMessagesScreen";
 
 const StackNavigator = () => {
+  //(Stack) manages the navigation between screens.
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
@@ -37,5 +38,3 @@ const StackNavigator = () => {
 };
 
 export default StackNavigator;
-
-const styles = StyleSheet.create({});

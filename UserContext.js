@@ -1,3 +1,4 @@
+//creating user ID so we can access it any point in our application
 import {createContext,useState} from "react";
 
 const UserType = createContext();

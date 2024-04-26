@@ -1,16 +1,22 @@
 import { KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+//Used for making HTTP requests to your backend services.
 import axios from "axios";
+// local storage system to persist data across app restarts.
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
+  //useState hooks initialize state variables email and password with default values
+  //setPassword and setEmail are updater functions
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  //used to check if the user is already looged in when the component mounts
   /*useEffect(() => {
     const checkLoginStatus = async () => {
       try {
+        // retrieves authToken from local storage if it exists
         const token = await AsyncStorage.getItem("authToken");
 
         if (token) {
@@ -24,15 +30,17 @@ const LoginScreen = () => {
     };
 
     checkLoginStatus();
-  }, []);*/
+  }, []);  *///empty dependency [] makes it so  it only runs once
   
 
+  //constructs user object with the email and password captured from state
   const handleLogin = () => {
     const user = {
       email: email,
       password: password,
     };
-
+    //Sends a POST request to the backend server with the user's email and password.
+    //on login, server responds with a token which is store locally in AsyncStorage under authToken
     axios.post("http://192.168.1.111:8082/login", user)
       .then((response) => {
         const token = response.data.token;
