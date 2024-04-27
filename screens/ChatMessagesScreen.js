@@ -115,7 +115,7 @@ const ChatMessagesScreen = () => {
         formData.append("messageText", message);
       }
 
-      const response = await fetch("http://${config.serverIP}/messages", {
+      const response = await fetch(`http://${config.serverIP}/messages`, {
         method: "POST",
         body: formData,
       });
