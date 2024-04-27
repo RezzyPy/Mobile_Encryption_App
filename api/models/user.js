@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publicKey: {  // Added field for storing the public key
+    type: String,
+    required: true,
+  },
   freindRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,

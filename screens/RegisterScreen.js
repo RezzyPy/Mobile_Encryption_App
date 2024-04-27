@@ -2,9 +2,32 @@ import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Pressable, Ale
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import config from "../config"
+import config from "../config";
+import nacl from 'tweetnacl';
+import { encode as base64Encode, decode as base64Decode } from 'base-64';
+import * as SecureStore from 'expo-secure-store';
 
-//useState hooks. initiallzed as empty, updater functions change these values
+// Function to encode Uint8Array to Base64
+const toBase64 = (uint8Array) => {
+  return base64Encode(String.fromCharCode.apply(null, uint8Array));
+};
+
+// Function to decode Base64 to Uint8Array
+const fromBase64 = (base64String) => {
+  return Uint8Array.from(base64Decode(base64String), c => c.charCodeAt(0));
+};
+
+// Function to encode string to Uint8Array
+const encodeUTF8 = (str) => {
+  return new TextEncoder().encode(str);
+};
+
+// Function to decode Uint8Array to string
+const decodeUTF8 = (uint8Array) => {
+  return new TextDecoder().decode(uint8Array);
+};
+
+// UseState hooks initialized as empty; updater functions change these values
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -12,15 +35,31 @@ const RegisterScreen = () => {
   const [image, setImage] = useState("");
   const navigation = useNavigation();
 
-  //creates an object with all information
+  // Function to generate key pair
+  const generateKeyPair = () => {
+    return nacl.box.keyPair();
+  };
+
+  // Creates an object with all information
+  const savePrivateKeySecurely = async (key) => {
+    await SecureStore.setItemAsync('privateKey', key);
+  };
+  
+  // Updated handleRegister function
   const handleRegister = () => {
+    const keyPair = generateKeyPair();
+    const publicKey = toBase64(keyPair.publicKey);
+    const privateKey = toBase64(keyPair.secretKey);  // Convert privateKey to Base64 for storage
+  
     const user = {
       name: name,
       email: email,
       password: password,
       image: image,
+      publicKey: publicKey
     };
-    // sends to backend to create user
+  
+    // Sends to backend to create user
     axios.post(`http://${config.serverIP}/register`, user)
       .then((response) => {
         Alert.alert("Registration successful", "You have been registered Successfully");
@@ -28,6 +67,8 @@ const RegisterScreen = () => {
         setEmail("");
         setPassword("");
         setImage("");
+        // Securely store the private key locally
+        savePrivateKeySecurely(privateKey);
       })
       .catch((error) => {
         Alert.alert("Registration Error", "An error occurred while registering");

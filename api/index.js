@@ -43,13 +43,13 @@ const Message = require("./models/message");
 
 
 app.post("/register", (req, res) => {
-  const { name, email, password, image } = req.body;
-  console.log("Attempting to register user:", email);  // Log when starting the registration process
+  const { name, email, password, image, publicKey } = req.body; // Include publicKey in the body
+  console.log("Attempting to register user:", email);
 
-  const newUser = new User({ name, email, password, image });
+  const newUser = new User({ name, email, password, image, publicKey }); // Save publicKey with other user details
   newUser.save()
     .then(() => {
-      console.log("User registered:", email);  // Log successful registration
+      console.log("User registered:", email);
       res.status(200).json({ message: "User registered successfully" });
     })
     .catch((err) => {
