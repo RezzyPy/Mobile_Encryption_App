@@ -16,6 +16,7 @@ nacl.setPRNG((x, n) => {
     x[i] = randomBytes[i];
   }
 });
+//a
 
 // Function to encode Uint8Array to Base64
 const toBase64 = (uint8Array) => {
@@ -45,7 +46,7 @@ const RegisterScreen = () => {
     const keyPair = generateKeyPair();
     const publicKey = toBase64(keyPair.publicKey);
     const privateKey = toBase64(keyPair.secretKey);  // Convert privateKey to Base64 for storage
-    
+
     //SHOULD REMOVE LATER 
     console.log("Generated Private Key:", privateKey); // Log the private key for verification 
     //SHOULD REMOVE LATER ^
