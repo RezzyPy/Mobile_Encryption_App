@@ -3,21 +3,30 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import config from '../config';
-import * as Random from 'expo-random';
 import nacl from 'tweetnacl';
 import { encode as base64Encode } from 'base-64';
-import 'react-native-get-random-values';  // Ensure the PRNG is available for cryptographic operations
+import 'react-native-get-random-values';
+import * as SecureStore from 'expo-secure-store';
+import * as Random from 'expo-random';
 
-// Function to encode Uint8Array to Base64
-const toBase64 = (uint8Array) => {
-  return base64Encode(String.fromCharCode.apply(null, uint8Array));
-};
-nacl.setPRNG(function(x, n) {
+// Set up nacl with a custom PRNG using expo-random
+nacl.setPRNG((x, n) => {
   let randomBytes = Random.getRandomBytes(n);
   for (let i = 0; i < n; i++) {
     x[i] = randomBytes[i];
   }
 });
+
+// Function to encode Uint8Array to Base64
+const toBase64 = (uint8Array) => {
+  return base64Encode(String.fromCharCode.apply(null, uint8Array));
+};
+
+// Function to securely store the private key
+const savePrivateKeySecurely = async (key) => {
+  await SecureStore.setItemAsync('privateKey', key);
+};
+
 // UseState hooks initialized as empty; updater functions change these values
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -36,6 +45,10 @@ const RegisterScreen = () => {
     const keyPair = generateKeyPair();
     const publicKey = toBase64(keyPair.publicKey);
     const privateKey = toBase64(keyPair.secretKey);  // Convert privateKey to Base64 for storage
+    
+    //SHOULD REMOVE LATER 
+    console.log("Generated Private Key:", privateKey); // Log the private key for verification 
+    //SHOULD REMOVE LATER ^
 
     const user = {
       name: name,
@@ -53,7 +66,8 @@ const RegisterScreen = () => {
         setEmail('');
         setPassword('');
         setImage('');
-        // Implement storing the private key securely on the device here
+        // Securely store the private key locally
+        savePrivateKeySecurely(privateKey);
       })
       .catch((error) => {
         Alert.alert("Registration Error", "An error occurred while registering");
